@@ -3,3 +3,13 @@ resource "local_file" "devops" {
 	content = "I want to become Engineer who knows Terraform"
 	
 }
+
+resource "random_string" "rand-str" { 
+length = 12
+special = true
+override_special = "!#$*&^%(){}[]:?;"
+}
+
+output "rand-str" {
+value = random_string.rand-str[*].result
+}
