@@ -25,15 +25,21 @@ resource "aws_security_group" "example" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
 
 resource "aws_instance" "example" {
   ami           = "ami-006dcf34c09e50022" // Amazon Linux 2 AMI
   instance_type = "t2.micro"
   key_name      = "devops"
-  #security_groups = [aws_security_group.example.id]
   vpc_security_group_ids = [
-    "sg-0ac4712014931ec78",
+    aws_security_group.example.id,
   ]
   user_data = <<-EOF
               #!/bin/bash
